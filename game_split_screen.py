@@ -5,6 +5,9 @@ WIDTH=1000
 HEIGHT=800
 TITLE=("GAME")
 
+bullets1=[]
+bullets2=[]
+
 screen=pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption(TITLE)
 
@@ -36,6 +39,24 @@ sprites=pygame.sprite.Group()
 sprites.add(player1)
 sprites.add(player2)
 
+def handle_bullets():
+    global health2,health1
+    for bullet in bullets1:
+        pygame.draw.rect(screen,"red",bullet,0)
+        bullet.x+=5
+        if bullet.colliderect(player2.rect):
+            health2-=1
+            bullets1.remove(bullet)
+            
+            
+
+    
+    for bullet in bullets2:
+        
+        pygame.draw.rect(screen,"yellow",bullet,0)
+        bullet.x-=5
+        
+
 
 
 run=True
@@ -43,6 +64,8 @@ while run:
     screen.blit(background, (0,0))
     sprites.draw(screen)
     pygame.draw.line(screen,"black",(500,0),(500,800),4)
+    handle_bullets()
+
 
     
     
@@ -76,6 +99,10 @@ while run:
         player1.rect.top=0
     if player1.rect.bottom>800:
         player1.rect.bottom=800
+    if keys [pygame.K_x]:
+        bullet=pygame.Rect(player1.rect.x+100,player1.rect.y+50,10,5)
+        bullets1.append(bullet)
+        
 
     keys=pygame.key.get_pressed()
     if keys [pygame.K_UP]:
@@ -94,6 +121,13 @@ while run:
         player2.rect.top=0
     if player2.rect.bottom>800:
         player2.rect.bottom=800
+    if keys [pygame.K_m]:
+        bullet=pygame.Rect(player2.rect.x,player2.rect.y+50,10,5)
+        bullets2.append(bullet)
+
+
+
+    
     pygame.display.update()
 
     
