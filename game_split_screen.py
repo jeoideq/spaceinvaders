@@ -40,24 +40,23 @@ sprites.add(player1)
 sprites.add(player2)
 
 def handle_bullets():
-    global health2,health1
+    global health2,health1,bullets1,bullets2
     for bullet in bullets1:
         pygame.draw.rect(screen,"red",bullet,0)
         bullet.x+=5
         if bullet.colliderect(player2.rect):
             health2-=1
             bullets1.remove(bullet)
-            
-            
-
+        
     
     for bullet in bullets2:
         
         pygame.draw.rect(screen,"yellow",bullet,0)
         bullet.x-=5
+        if bullet.colliderect(player1.rect):
+            health1-=1
+            bullets2.remove(bullet)
         
-
-
 
 run=True
 while run:
@@ -68,7 +67,6 @@ while run:
 
 
     
-    
     font=pygame.font.SysFont("Arial",40)
     message1=font.render("HEALTH"+str(health1), True,"black")
     screen.blit(message1,(50,50))
@@ -78,9 +76,34 @@ while run:
     message2=font.render("HEALTH"+str(health2), True,"black")
     screen.blit(message2,(750,50))
 
+    if health1<=0:
+        end_message1=font.render("YELLOW WON",True,"black")
+        screen.blit(end_message1, (500,400))
+        pygame.display.update()
+        pygame.time.delay(4000)
+        run=False
+
+    if health2<=0:
+        end_message2=font.render("RED WON",True,"black")
+        screen.blit(end_message2, (500,400))
+        pygame.display.update()
+        pygame.time.delay(4000)
+        run=False
+
+
+
     
     for event in pygame.event.get():
-       if event.type == pygame.QUIT:
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_x:
+                bullet=pygame.Rect(player1.rect.x+100,player1.rect.y+50,10,5)
+                bullets1.append(bullet)
+            if event.key == pygame.K_m:
+                bullet=pygame.Rect(player2.rect.x,player2.rect.y+50,10,5)
+                bullets2.append(bullet)
+        
+        
+        if event.type == pygame.QUIT:
             run=False
     keys=pygame.key.get_pressed()
     if keys [pygame.K_w]:
@@ -99,9 +122,8 @@ while run:
         player1.rect.top=0
     if player1.rect.bottom>800:
         player1.rect.bottom=800
-    if keys [pygame.K_x]:
-        bullet=pygame.Rect(player1.rect.x+100,player1.rect.y+50,10,5)
-        bullets1.append(bullet)
+  
+       
         
 
     keys=pygame.key.get_pressed()
@@ -121,9 +143,8 @@ while run:
         player2.rect.top=0
     if player2.rect.bottom>800:
         player2.rect.bottom=800
-    if keys [pygame.K_m]:
-        bullet=pygame.Rect(player2.rect.x,player2.rect.y+50,10,5)
-        bullets2.append(bullet)
+  
+        
 
 
 
